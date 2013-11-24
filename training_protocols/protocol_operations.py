@@ -23,7 +23,8 @@ class ProtocolOperations():
         self._tts_engine.startLoop(False)
 
     def destroy(self):
-        self._tts_engine.endLoop()
+        if self._tts_engine._inLoop:
+            self._tts_engine.endLoop()
         self.clear_canvas()
 
     def clear_shots(self):
