@@ -198,7 +198,7 @@ class MainWindow:
         l = self._webcam_frame.shape[1]
         h = self._webcam_frame.shape[0]
         mask = numpy.zeros((h,l,1), numpy.uint8)
-        cv2.circle(mask, (x, y), 15, (255,255,555), -1)
+        cv2.circle(mask, (x, y), 10, (255,255,555), -1)
         mean_color = cv2.mean(self._webcam_frame, mask)
 
         # Remember that self._webcam_frame is in BGR
@@ -316,8 +316,11 @@ class MainWindow:
         for shot in shot_entries: self._shot_timer_tree.delete(shot)
         self._previous_shot_time_selection = None
 
+        self._webcam_canvas.focus_set()
+
     def quit(self):
         self._shutdown = True
+        self._cv.release()
         self._window.quit()
 
     # click to shoot - ouchie
@@ -420,6 +423,8 @@ class MainWindow:
             self._previous_shot_time_selection.toggle_selected()
 
         self._previous_shot_time_selection = self._shots[shot_index]
+
+        self._webcam_canvas.focus_set()
 
     def build_gui(self, feed_dimensions=(600,480)):
         # Create the main window
