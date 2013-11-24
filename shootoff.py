@@ -32,6 +32,7 @@ MARKER_RADIUS = "markerradius"
 IGNORE_LASER_COLOR = "ignorelasercolor"
 SHOT_MARKER = "shot_marker"
 TARGET_VISIBILTY_MENU_INDEX = 3
+CLICKTOSHOOT_MENU_INDEX = 4 # ouchie
 
 class MainWindow:
     def refresh_frame(self, *args):
@@ -221,6 +222,10 @@ class MainWindow:
 
         regions = self._webcam_canvas.find_overlapping(x, y, x, y)
 
+        # moved the shot listener to be called before the hit listener so that shot limits can be enforced - ouchie
+        if self._loaded_training != None: 
+            self._loaded_training.shot_listener(shot, is_hit)
+
         # If we hit a targert region, run its commands and notify the
         # loaded plugin of the hit
         for region in reversed(regions):
@@ -238,9 +243,6 @@ class MainWindow:
                 # only run the commands and notify a hit for the top most
                 # region
                 break
-
-        if self._loaded_training != None: 
-            self._loaded_training.shot_listener(shot, is_hit)
 
     def open_target_editor(self):
         TargetEditor(self._frame, self._editor_image, 
@@ -318,7 +320,34 @@ class MainWindow:
         self._shutdown = True
         self._window.quit()
 
+    # click to shoot - ouchie
+    def toggle_clicktoshoot(self):
+        if self._clicktoshoot_enabled:
+            self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
+                label="Click to Shoot On")
+        else:
+            self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
+                label="Click to Shoot Off")
+
+        self._clicktoshoot_enabled = not self._clicktoshoot_enabled
+        
+    def canvas_clicktoshoot(self, event):
+        timestamp = 0
+        if self._shot_timer_start is None:
+            self._shot_timer_start = time.time()
+        else:    
+            timestamp = time.time() - self._shot_timer_start
+        new_shot = Shot((event.x, event.y), self._webcam_canvas, self._preferences[MARKER_RADIUS],
+            "purple", timestamp)
+        self._shots.append(new_shot)
+        new_shot.draw_marker()
+        self.process_hit(new_shot)
+        
     def canvas_click(self, event):
+        if self._clicktoshoot_enabled:
+            self.canvas_clicktoshoot(event)
+            return
+
         # find the target that was selected
         # if a target wasn't clicked, _selected_target
         # will be empty and all targets will be dim
@@ -453,6 +482,9 @@ class MainWindow:
             self._targets_menu, "Edit Target", self.edit_target)
         self._targets_menu.add_command(label="Hide Targets",
             command=self.toggle_target_visibility)
+        # click to shoot toggle - ouchie
+        self._targets_menu.add_command(label="Click to Shoot On",
+            command=self.toggle_clicktoshoot)
         menu_bar.add_cascade(label="Targets", menu=self._targets_menu)
 
         training_menu = Tkinter.Menu(menu_bar, tearoff=False)
@@ -514,7 +546,8 @@ class MainWindow:
         self._preferences = preferences
         self._shot_timer_start = None
         self._previous_shot_time_selection = None
-
+        self._clicktoshoot_enabled = False # ouchie
+        
         self._cv = cv2.VideoCapture(0)
 
         if self._cv.isOpened():

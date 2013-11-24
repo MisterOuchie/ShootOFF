@@ -65,7 +65,23 @@ class TargetPickler():
                 shape = canvas.create_polygon(region["coords"],
                     fill=region["fill"], outline="black",
                     stipple="gray25", tags=raw_tags)
+                
+            # AQT shapes - ouchie
+            if parsed_tags["_shape"] == "aqt3":
+                shape = canvas.create_polygon(region["coords"],
+                    fill=region["fill"], outline="black",
+                    stipple="gray25", tags=raw_tags)
+                
+            if parsed_tags["_shape"] == "aqt4":
+                shape = canvas.create_polygon(region["coords"],
+                    fill=region["fill"], outline="white",
+                    stipple="gray25", tags=raw_tags)
 
+            if parsed_tags["_shape"] == "aqt5":
+                shape = canvas.create_polygon(region["coords"],
+                    fill=region["fill"], outline="white",
+                    stipple="gray25", tags=raw_tags)
+                
             if shape != 0:
                 regions.append(shape)
 

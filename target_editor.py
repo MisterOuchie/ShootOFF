@@ -14,6 +14,11 @@ RECTANGLE = 1
 OVAL = 2
 TRIANGLE = 3
 
+# AQT constants - ouchie
+AQT3 = 10
+AQT4 = 11
+AQT5 = 12
+
 CANVAS_BACKGROUND = (1,)
 
 class TargetEditor():
@@ -115,6 +120,7 @@ class TargetEditor():
             self._cursor_shape = None
 
         initial_size = 30
+        AQT_scale = 2.5 # ouchie
 
         if self._radio_selection.get() == RECTANGLE:        
             self._cursor_shape = self._target_canvas.create_rectangle(
@@ -144,6 +150,95 @@ class TargetEditor():
                 event.y - initial_size,
                 fill="black", outline="black", stipple="gray25",
                 tags=("_shape:triangle"))
+            
+        # AQT target shapes - ouchie
+        elif self._radio_selection.get() == AQT3:        
+            self._cursor_shape = self._target_canvas.create_polygon(
+                event.x+15.083*AQT_scale,event.y+13.12*AQT_scale,
+                event.x+15.083*AQT_scale,event.y+-0.147*AQT_scale,
+                event.x+14.277*AQT_scale,event.y+-2.508*AQT_scale,
+                event.x+13.149*AQT_scale,event.y+-4.115*AQT_scale,
+                event.x+11.841*AQT_scale,event.y+-5.257*AQT_scale,
+                event.x+10.557*AQT_scale,event.y+-6.064*AQT_scale,
+                event.x+8.689*AQT_scale,event.y+-6.811*AQT_scale,
+                event.x+7.539*AQT_scale,event.y+-8.439*AQT_scale,
+                event.x+7.076*AQT_scale,event.y+-9.978*AQT_scale,
+                event.x+6.104*AQT_scale,event.y+-11.577*AQT_scale,
+                event.x+4.82*AQT_scale,event.y+-12.829*AQT_scale,
+                event.x+3.43*AQT_scale,event.y+-13.788*AQT_scale,
+                event.x+1.757*AQT_scale,event.y+-14.386*AQT_scale,
+                event.x+0.083*AQT_scale,event.y+-14.55*AQT_scale,
+                event.x+-1.59*AQT_scale,event.y+-14.386*AQT_scale,
+                event.x+-3.263*AQT_scale,event.y+-13.788*AQT_scale,
+                event.x+-4.653*AQT_scale,event.y+-12.829*AQT_scale,
+                event.x+-5.938*AQT_scale,event.y+-11.577*AQT_scale,
+                event.x+-6.909*AQT_scale,event.y+-9.978*AQT_scale,
+                event.x+-7.372*AQT_scale,event.y+-8.439*AQT_scale,
+                event.x+-8.522*AQT_scale,event.y+-6.811*AQT_scale,
+                event.x+-10.39*AQT_scale,event.y+-6.064*AQT_scale,
+                event.x+-11.674*AQT_scale,event.y+-5.257*AQT_scale,
+                event.x+-12.982*AQT_scale,event.y+-4.115*AQT_scale,
+                event.x+-14.11*AQT_scale,event.y+-2.508*AQT_scale,
+                event.x+-14.917*AQT_scale,event.y+-0.147*AQT_scale,
+                event.x+-14.917*AQT_scale,event.y+13.12*AQT_scale,
+                fill="white", outline="black",
+                tags=("_shape:aqt3"))
+
+        elif self._radio_selection.get() == AQT4:        
+            self._cursor_shape = self._target_canvas.create_polygon(
+                event.x+11.66*AQT_scale,event.y+5.51*AQT_scale,
+                event.x+11.595*AQT_scale,event.y+0.689*AQT_scale,
+                event.x+11.1*AQT_scale,event.y+-1.084*AQT_scale,
+                event.x+9.832*AQT_scale,event.y+-2.441*AQT_scale,
+                event.x+7.677*AQT_scale,event.y+-3.322*AQT_scale,
+                event.x+5.821*AQT_scale,event.y+-4.709*AQT_scale,
+                event.x+4.715*AQT_scale,event.y+-6.497*AQT_scale,
+                event.x+4.267*AQT_scale,event.y+-8.135*AQT_scale,
+                event.x+3.669*AQT_scale,event.y+-9.41*AQT_scale,
+                event.x+2.534*AQT_scale,event.y+-10.553*AQT_scale,
+                event.x+1.436*AQT_scale,event.y+-11.091*AQT_scale,
+                event.x+0.083*AQT_scale,event.y+-11.323*AQT_scale,
+                event.x+-1.269*AQT_scale,event.y+-11.091*AQT_scale,
+                event.x+-2.367*AQT_scale,event.y+-10.553*AQT_scale,
+                event.x+-3.502*AQT_scale,event.y+-9.41*AQT_scale,
+                event.x+-4.1*AQT_scale,event.y+-8.135*AQT_scale,
+                event.x+-4.548*AQT_scale,event.y+-6.497*AQT_scale,
+                event.x+-5.654*AQT_scale,event.y+-4.709*AQT_scale,
+                event.x+-7.51*AQT_scale,event.y+-3.322*AQT_scale,
+                event.x+-9.665*AQT_scale,event.y+-2.441*AQT_scale,
+                event.x+-10.933*AQT_scale,event.y+-1.084*AQT_scale,
+                event.x+-11.428*AQT_scale,event.y+0.689*AQT_scale,
+                event.x+-11.493*AQT_scale,event.y+5.51*AQT_scale,
+                fill="black", outline="white",
+                tags=("_shape:aqt4"))
+            
+        elif self._radio_selection.get() == AQT5:        
+            self._cursor_shape = self._target_canvas.create_polygon(
+                event.x+7.893*AQT_scale,event.y+3.418*AQT_scale,
+                event.x+7.893*AQT_scale,event.y+1.147*AQT_scale,
+                event.x+7.255*AQT_scale,event.y+0.331*AQT_scale,
+                event.x+5.622*AQT_scale,event.y+-0.247*AQT_scale,
+                event.x+4.187*AQT_scale,event.y+-1.124*AQT_scale,
+                event.x+2.833*AQT_scale,event.y+-2.339*AQT_scale,
+                event.x+1.917*AQT_scale,event.y+-3.594*AQT_scale,
+                event.x+1.219*AQT_scale,event.y+-5.048*AQT_scale,
+                event.x+0.9*AQT_scale,event.y+-6.223*AQT_scale,
+                event.x+0.801*AQT_scale,event.y+-7.1*AQT_scale,
+                event.x+0.521*AQT_scale,event.y+-7.558*AQT_scale,
+                event.x+0.083*AQT_scale,event.y+-7.617*AQT_scale,
+                event.x+-0.354*AQT_scale,event.y+-7.558*AQT_scale,
+                event.x+-0.634*AQT_scale,event.y+-7.1*AQT_scale,
+                event.x+-0.733*AQT_scale,event.y+-6.223*AQT_scale,
+                event.x+-1.052*AQT_scale,event.y+-5.048*AQT_scale,
+                event.x+-1.75*AQT_scale,event.y+-3.594*AQT_scale,
+                event.x+-2.666*AQT_scale,event.y+-2.339*AQT_scale,
+                event.x+-4.02*AQT_scale,event.y+-1.124*AQT_scale,
+                event.x+-5.455*AQT_scale,event.y+-0.247*AQT_scale,
+                event.x+-7.088*AQT_scale,event.y+0.331*AQT_scale,
+                event.x+-7.726*AQT_scale,event.y+1.147*AQT_scale,
+                event.x+-7.726*AQT_scale,event.y+3.418*AQT_scale,
+                fill="black", outline="white",
+                tags=("_shape:aqt5"))
 
     def canvas_delete_region(self, event):
         if (self._selected_region is not None and
@@ -242,6 +337,18 @@ class TargetEditor():
         self._triangle_icon = Image.open("images/triangle.png")
         self.create_radio_button(toolbar, self._triangle_icon, TRIANGLE)
 
+        # AQT3 button
+        self._triangle_icon = Image.open("images/AQT3.png")
+        self.create_radio_button(toolbar, self._triangle_icon, AQT3)
+
+        # AQT4 button
+        self._triangle_icon = Image.open("images/AQT4.png")
+        self.create_radio_button(toolbar, self._triangle_icon, AQT4)
+        
+        # AQT5 button
+        self._triangle_icon = Image.open("images/AQT5.png")
+        self.create_radio_button(toolbar, self._triangle_icon, AQT5)
+        
         # bring forward button
         self._bring_forward_icon = Image.open("images/bring_forward.png")
         self.create_toolbar_button(toolbar, self._bring_forward_icon, 
