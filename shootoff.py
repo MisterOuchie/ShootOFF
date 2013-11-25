@@ -327,30 +327,36 @@ class MainWindow:
     def toggle_clicktoshoot(self):
         if self._clicktoshoot_enabled:
             self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
-                label="Click to Shoot On")
+                label="Click to Shoot Enable")
         else:
             self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
-                label="Click to Shoot Off")
+                label="Click to Shoot Disable")
 
         self._clicktoshoot_enabled = not self._clicktoshoot_enabled
-        
-    def canvas_clicktoshoot(self, event):
+
+    def canvas_click_red(self, event):
+        if self._clicktoshoot_enabled:
+            self.canvas_clicktoshoot(event, "red")
+        return
+
+    def canvas_click_green(self, event):
+        if self._clicktoshoot_enabled:
+            self.canvas_clicktoshoot(event, "green")
+        return
+    
+    def canvas_clicktoshoot(self, event, color):
         timestamp = 0
         if self._shot_timer_start is None:
             self._shot_timer_start = time.time()
         else:    
             timestamp = time.time() - self._shot_timer_start
         new_shot = Shot((event.x, event.y), self._webcam_canvas, self._preferences[MARKER_RADIUS],
-            "purple", timestamp)
+            color, timestamp)
         self._shots.append(new_shot)
         new_shot.draw_marker()
         self.process_hit(new_shot)
-        
-    def canvas_click(self, event):
-        if self._clicktoshoot_enabled:
-            self.canvas_clicktoshoot(event)
-            return
 
+    def canvas_click(self, event):
         # find the target that was selected
         # if a target wasn't clicked, _selected_target
         # will be empty and all targets will be dim
@@ -443,6 +449,10 @@ class MainWindow:
         self._webcam_canvas.bind('<ButtonPress-1>', self.canvas_click)
         self._webcam_canvas.bind('<Delete>', self.canvas_delete_target)
 
+        # binds for click to shoot - ouchie
+        self._webcam_canvas.bind('<Alt-ButtonPress-1>', self.canvas_click_red)
+        self._webcam_canvas.bind('<Control-ButtonPress-1>', self.canvas_click_green)
+
         self._canvas_manager = CanvasManager(self._webcam_canvas)
     
         # Create a button to clear shots
@@ -488,7 +498,7 @@ class MainWindow:
         self._targets_menu.add_command(label="Hide Targets",
             command=self.toggle_target_visibility)
         # click to shoot toggle - ouchie
-        self._targets_menu.add_command(label="Click to Shoot On",
+        self._targets_menu.add_command(label="Click to Shoot Enable",
             command=self.toggle_clicktoshoot)
         menu_bar.add_cascade(label="Targets", menu=self._targets_menu)
 
