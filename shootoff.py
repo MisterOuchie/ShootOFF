@@ -32,7 +32,6 @@ MARKER_RADIUS = "markerradius"
 IGNORE_LASER_COLOR = "ignorelasercolor"
 SHOT_MARKER = "shot_marker"
 TARGET_VISIBILTY_MENU_INDEX = 3
-CLICKTOSHOOT_MENU_INDEX = 4 # ouchie
 
 class MainWindow:
     def refresh_frame(self, *args):
@@ -324,23 +323,13 @@ class MainWindow:
         self._window.quit()
 
     # click to shoot - ouchie
-    def toggle_clicktoshoot(self):
-        if self._clicktoshoot_enabled:
-            self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
-                label="Click to Shoot Enable")
-        else:
-            self._targets_menu.entryconfig(CLICKTOSHOOT_MENU_INDEX,
-                label="Click to Shoot Disable")
-
-        self._clicktoshoot_enabled = not self._clicktoshoot_enabled
-
     def canvas_click_red(self, event):
-        if self._clicktoshoot_enabled:
+        if args.debug:
             self.canvas_clicktoshoot(event, "red")
         return
 
     def canvas_click_green(self, event):
-        if self._clicktoshoot_enabled:
+        if args.debug:
             self.canvas_clicktoshoot(event, "green")
         return
     
@@ -497,9 +486,6 @@ class MainWindow:
             self._targets_menu, "Edit Target", self.edit_target)
         self._targets_menu.add_command(label="Hide Targets",
             command=self.toggle_target_visibility)
-        # click to shoot toggle - ouchie
-        self._targets_menu.add_command(label="Click to Shoot Enable",
-            command=self.toggle_clicktoshoot)
         menu_bar.add_cascade(label="Targets", menu=self._targets_menu)
 
         training_menu = Tkinter.Menu(menu_bar, tearoff=False)
@@ -561,7 +547,6 @@ class MainWindow:
         self._preferences = preferences
         self._shot_timer_start = None
         self._previous_shot_time_selection = None
-        self._clicktoshoot_enabled = False # ouchie
         
         self._cv = cv2.VideoCapture(0)
 
